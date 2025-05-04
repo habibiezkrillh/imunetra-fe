@@ -7,3 +7,20 @@
 Frontend dari aplikasi **Imunetra**, sebuah platform mobile untuk membantu pendeteksian pneumonia pada anak-anak di daerah terpencil. Aplikasi ini dikembangkan menggunakan Flutter dengan UI adaptif untuk dua peran pengguna: **Relawan** dan **Tenaga Kesehatan**.
 
 ---
+
+## 🚀 Fitur
+
+- Login dan registrasi pengguna
+- Input data anak oleh relawan
+- Deteksi awal gejala pneumonia
+- Tampilan laporan untuk tenaga kesehatan
+
+---
+
+## Instalasi dan Menjalankan Aplikasi
+
+```bash
+git clone https://github.com/habibiezkrillh/imunetra-fe.git
+cd imunetra/frontend
+flutter pub get
+flutter run
