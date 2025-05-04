@@ -17,10 +17,9 @@ Frontend dari aplikasi **Imunetra**, sebuah platform mobile untuk membantu pende
 
 ---
 
-## Instalasi dan Menjalankan Aplikasi
+## Requirements
 
-```bash
-git clone https://github.com/habibiezkrillh/imunetra-fe.git
-cd imunetra/frontend
-flutter pub get
-flutter run
+- Flutter (versi x.xx.xx)
+- Dart (versi x.xx.xx)
+
+to be continue...
