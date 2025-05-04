@@ -11,8 +11,11 @@ Frontend dari aplikasi **Imunetra**, sebuah platform mobile untuk membantu pende
 ## 🚀 Fitur
 
 - Login dan registrasi pengguna
+- Dashboard
 - Input data anak oleh relawan
 - Deteksi awal gejala pneumonia
+- Riwayat untuk kegiatan relawan
+- Chat
 - Tampilan laporan untuk tenaga kesehatan
 
 ---
