@@ -25,4 +25,10 @@ Frontend dari aplikasi **Imunetra**, sebuah platform mobile untuk membantu pende
 - Flutter (versi x.xx.xx)
 - Dart (versi x.xx.xx)
 
-to be continue...
+---
+
+## 👥 Tim Pengembang 
+
+- Aurelia Davine Putri Nata
+- Leonard Widjaja
+- Muhammad Habbibie Zikrillah
