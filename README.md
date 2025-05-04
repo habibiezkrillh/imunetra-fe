@@ -1,5 +1,7 @@
 # Imunetra - Frontend
 
+![Logo Aplikasi](https://imgur.com/a/FbevL7c)
+
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=flat&logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?style=flat&logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-0175C2?style=flat&logo=dart&logoColor=white)
