@@ -29,10 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
-    sdk: flutter
-  kc0035a_flutter_customer_app: ^1.0.0  # Sesuaikan dengan versi yang Anda inginkan
-  fluttertoast: ^8.0.9
-  
+    sdk: flutter  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -63,6 +60,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/Logo.png
+    - assets/images/gambar1.png
+    - assets/images/gambar2.png
+    - assets/images/gambar3.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

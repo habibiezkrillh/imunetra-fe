@@ -25,7 +25,7 @@ class _SplashScreenState extends State<Splashscreen> {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => Onboarding(),
+          pageBuilder: (context, animation, secondaryAnimation) => OnboardingScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeInOut));
             var fadeAnimation = animation.drive(tween);

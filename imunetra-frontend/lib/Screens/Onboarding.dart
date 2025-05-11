@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'HomeUser.dart';
+
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -7,31 +7,37 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _pageController = PageController();
+  final PageController _controller = PageController();
   int _currentPage = 0;
 
-  final List<Map<String, String>> _onboardingData = [
+  final List<Map<String, String>> onboardingData = [
     {
-      'image': 'assets/images/Gambar1.png',
-      'title': 'Selamat datang di NaikPete',
+      "image": "assets/images/gambar1.png",
+      "title": "Imunetra",
+      "desc": "Bersama kita cegah pneumonia pada anak-anak yang membutuhkan."
     },
     {
-      'image': 'assets/images/Gambar2.png',
-      'title': 'Selamat menikmati perjalanan yang nyaman dan terjamin',
+      "image": "assets/images/gambar2.png",
+      "title": "Imunetra",
+      "desc": "Pantau kesehatan anak secara langsung dengan sistem cerdas."
     },
     {
-      'image': 'assets/images/Gambar3.png',
-      'title': 'Let’s Get Started',
+      "image": "assets/images/gambar3.png",
+      "title": "Imunetra",
+      "desc": "Bantu relawan dan petugas kesehatan menjangkau lebih banyak anak."
     },
   ];
 
-  void _goToHomeScreen() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomeScreens(username: ''),
-      ),
-    );
+  void _nextPage() {
+    if (_currentPage < onboardingData.length - 1) {
+      _controller.nextPage(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      // Arahkan ke halaman utama atau login
+      print("Onboarding selesai");
+    }
   }
 
   @override
@@ -41,105 +47,70 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           Expanded(
             child: PageView.builder(
-              controller: _pageController,
+              controller: _controller,
+              itemCount: onboardingData.length,
               onPageChanged: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
+                setState(() => _currentPage = index);
               },
-              itemCount: _onboardingData.length,
               itemBuilder: (context, index) {
-                final image = _onboardingData[index]['image'];
-                final title = _onboardingData[index]['title'];
-
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    image != null && image.isNotEmpty
-                        ? Image.asset(image, height: 300)
-                        : const Icon(Icons.image_not_supported, size: 100),
-                    const SizedBox(height: 20),
-                    Text(
-                      title ?? 'Title not available',
-                      textAlign: TextAlign.center, // Rata tengah
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                return Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(onboardingData[index]['image']!),
+                      SizedBox(height: 32),
+                      Text(
+                        onboardingData[index]['title']!,
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 16),
+                      Text(
+                        onboardingData[index]['desc']!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
           ),
-          if (_currentPage == _onboardingData.length - 1)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: ElevatedButton(
-                onPressed: _goToHomeScreen,
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.cyan, // Warna tulisan putih
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15, horizontal: 40), // Ukuran tombol diperbesar
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Sudut membulat
-                  ),
-                ),
-                child: const Text(
-                  'Sign In',
-                  style: TextStyle(fontSize: 18), // Perbesar tulisan
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              onboardingData.length,
+              (index) => Container(
+                margin: EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+                width: _currentPage == index ? 12 : 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: _currentPage == index ? Colors.black : Colors.grey,
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
             ),
+          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.all(24.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
+                TextButton(
                   onPressed: () {
-                    if (_currentPage > 0) {
-                      _pageController.previousPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
+                    // Skip ke akhir atau halaman login
+                    print("Lewati");
                   },
-                  icon: const Icon(Icons.arrow_back_ios),
+                  child: Text("Lewati", style: TextStyle(color: Colors.black)),
                 ),
-                Row(
-                  children: List.generate(
-                    _onboardingData.length,
-                    (index) => Container(
-                      margin: const EdgeInsets.only(right: 5),
-                      height: 8,
-                      width: _currentPage == index ? 16 : 8,
-                      decoration: BoxDecoration(
-                        color: _currentPage == index
-                            ? Colors.blue
-                            : Colors.grey,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    if (_currentPage == _onboardingData.length - 1) {
-                      _goToHomeScreen();
-                    } else {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                      );
-                    }
-                  },
-                  icon: const Icon(Icons.arrow_forward_ios),
+                ElevatedButton(
+                  onPressed: _nextPage,
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                  child: Text("Lanjut"),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 20),
+          )
         ],
       ),
     );
