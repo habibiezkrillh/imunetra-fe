@@ -34,6 +34,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_screenutil: ^5.9.3
+  image_picker: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +65,8 @@ flutter:
     - assets/images/gambar1.png
     - assets/images/gambar2.png
     - assets/images/gambar3.png
+    - assets/images/profile.png
+
 
   #   - images/a_dot_ham.jpeg
 
