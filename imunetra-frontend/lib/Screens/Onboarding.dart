@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:imunetra/Screens/Profile.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -35,8 +35,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      // Arahkan ke halaman utama atau login
-      print("Onboarding selesai");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => Profile()),
+      );
     }
   }
 
@@ -97,9 +99,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () {
-                    // Skip ke akhir atau halaman login
-                    print("Lewati");
+                   onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => Profile()),
+                    );
                   },
                   child: Text("Lewati", style: TextStyle(color: Colors.black)),
                 ),
