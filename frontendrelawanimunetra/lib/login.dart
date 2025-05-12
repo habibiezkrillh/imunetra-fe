@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
                 Icon(Icons.health_and_safety,
                     size: 64, color: Colors.blueAccent),
                 const SizedBox(height: 12),
-                Text(
+                const Text(
                   "Imunetra",
                   style: TextStyle(
                     fontSize: 24,
@@ -83,7 +83,7 @@ class LoginPage extends StatelessWidget {
                     onTap: () {
                       // aksi lupa sandi
                     },
-                    child: Text(
+                    child: const Text(
                       "Lupa Kata Sandi?",
                       style: TextStyle(
                         fontSize: 13,
@@ -111,7 +111,8 @@ class LoginPage extends StatelessWidget {
                       elevation: 4,
                     ),
                     onPressed: () {
-                      // aksi login
+                      // Navigasi ke dashboard
+                      Navigator.pushNamed(context, '/dashboard');
                     },
                     child: const Text("Masuk"),
                   ),
@@ -126,9 +127,9 @@ class LoginPage extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        // aksi daftar
+                        Navigator.pushNamed(context, '/register');
                       },
-                      child: Text(
+                      child: const Text(
                         "Daftar",
                         style: TextStyle(
                           fontSize: 14,
