@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:imunetra/Screens/OnBoarding.dart';
+import 'package:imunetra/Views/OnBoarding.dart';
 
 class Splashscreen extends StatefulWidget {
   @override

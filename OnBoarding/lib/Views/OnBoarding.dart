@@ -83,8 +83,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         onboardingData[index]["title"]!,
                         style: TextStyle(
                           fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF3B6BFD), // atau sesuaikan dengan warna brand kamu
+                          fontWeight: FontWeight.w900,
+                          color: Color.fromARGB(255, 0, 0, 0), // atau sesuaikan dengan warna brand kamu
                         ),
                       ),
                       SizedBox(height: 16),
