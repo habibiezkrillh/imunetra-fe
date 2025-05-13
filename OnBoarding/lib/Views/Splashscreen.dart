@@ -1,75 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:imunetra/Views/OnBoarding.dart';
+import 'package:imunetra/bloc/Splashscreen_bloc.dart';
+import 'package:imunetra/utils/navigator_splash.dart';
+import '../services/splash_service.dart';
 
-class Splashscreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => SplashBloc(SplashService())..add(StartSplash()),
+      child: SplashView(),
+    );
+  }
 }
 
-class _SplashScreenState extends State<Splashscreen> {
-  double _opacity = 0.0;
-
+class SplashView extends StatelessWidget {
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    return BlocListener<SplashBloc, SplashState>(
+      listenWhen: (prev, curr) => prev.isCompleted != curr.isCompleted,
+      listener: (context, state) {
+        if (state.isCompleted) {
+          NavigatorHelper.navigateWithFade(context, OnboardingPage());
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final titleFontSize = (constraints.maxWidth * 0.06).clamp(16.0, 32.0);
+            final imageWidth = (constraints.maxWidth * 0.6).clamp(100.0, 300.0);
 
-    // Mulai animasi fade-in
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        _opacity = 1.0;
-      });
-    });
-
-    // Navigasi otomatis ke layar berikutnya setelah 5 detik dengan animasi transisi fade-in
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => OnboardingPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeInOut));
-            var fadeAnimation = animation.drive(tween);
-
-            return FadeTransition(
-              opacity: fadeAnimation,
-              child: child,
+            return Center(
+              child: BlocBuilder<SplashBloc, SplashState>(
+                builder: (context, state) {
+                  return AnimatedOpacity(
+                    duration: const Duration(seconds: 2),
+                    opacity: state.opacity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/Logo.png',
+                          width: imageWidth,
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  );
+                },
+              ),
             );
           },
         ),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          double imageWidth = constraints.maxWidth * 0.6;
-          double titleFontSize = constraints.maxWidth * 0.06;
-          double subtitleFontSize = constraints.maxWidth * 0.04;
-
-          titleFontSize = titleFontSize.clamp(16.0, 32.0);
-          subtitleFontSize = subtitleFontSize.clamp(12.0, 24.0);
-
-          return Center(
-            child: AnimatedOpacity(
-              duration: Duration(seconds: 2), // Durasi animasi fade-in
-              opacity: _opacity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/Logo.png',
-                    width: imageWidth.clamp(100.0, 300.0),
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              ),
-            ),
-          );
-        },
       ),
     );
   }
