@@ -8,11 +8,13 @@ import '../views/chat/detail_chat_view.dart';
 final GoRouter router = GoRouter(
   initialLocation: '/',
   routes: [
+    // Root route with bottom navigation
     GoRoute(
       path: '/',
       name: 'main',
       builder: (context, state) => const MainNavigationView(),
       routes: [
+        // Nested Chat route
         GoRoute(
           path: 'chat',
           name: 'chat',
@@ -21,7 +23,7 @@ final GoRouter router = GoRouter(
       ],
     ),
 
-    // Route terpisah untuk Detail Chat
+    // Global Detail Chat Route
     GoRoute(
       path: '/chat/detail/:name',
       name: 'chat-detail',
@@ -29,7 +31,7 @@ final GoRouter router = GoRouter(
         final name = state.pathParameters['name'] ?? 'User';
         return DetailChatView(
           senderName: name,
-          message: 'Halo, boleh tahu lebih dalam mengenai acaranya?', // Bisa diubah jadi dinamis nanti
+          message: 'Halo, boleh tahu lebih dalam mengenai acaranya?',
         );
       },
     ),

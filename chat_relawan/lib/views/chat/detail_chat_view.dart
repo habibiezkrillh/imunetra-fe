@@ -13,148 +13,77 @@ class DetailChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFD9EDFF), // Warna biru muda
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Row(
+        title: Text(senderName),
+      ),
+      body: Container(
+        color: const Color(0xFFE5F2FF), // warna latar belakang seperti desainmu
+        padding: const EdgeInsets.all(12),
+        child: Column(
           children: [
-            const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/profile.jpg'), // Ganti sesuai kebutuhan
+            const ChatBubble(
+              isSender: false,
+              text: 'Halo, boleh tahu lebih dalam mengenai acaranya?',
+              time: '10:00',
             ),
-            const SizedBox(width: 8),
-            Text(
-              senderName,
-              style: const TextStyle(color: Colors.black),
+            const ChatBubble(
+              isSender: true,
+              text: 'Selamat siang, Kak. Jadi nanti kita akan membersihkan sungai jenebrang',
+              time: '10:05',
+            ),
+            const ChatBubble(
+              isSender: true,
+              text: 'Dari perusahaan Kakak sendiri apakah tertarik untuk mensponsori acara Kami?',
+              time: '10:06',
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.call_outlined, color: Colors.black),
-            onPressed: () {}, // Tambahkan aksi telpon jika perlu
-          )
-        ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                // Pesan dari lawan bicara
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Text("Halo, boleh tahu lebih dalam mengenai acaranya?"),
-                      ),
-                      const SizedBox(height: 4),
-                      const Text("10:00", style: TextStyle(fontSize: 12)),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Pesan dari user
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF339CFF),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Text(
-                          "Selamat siang, Kak. Jadi nanti kita akan membersihkan sungai jeneberang",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Text("10:05", style: TextStyle(fontSize: 12, color: Colors.white)),
-                          SizedBox(width: 4),
-                          Icon(Icons.done_all, size: 16, color: Colors.white),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF339CFF),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: const Text(
-                          "Dari perusahaan Kakak sendiri apakah tertarik untuk mensponsori acara Kami?",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Text("10:06", style: TextStyle(fontSize: 12, color: Colors.white)),
-                          SizedBox(width: 4),
-                          Icon(Icons.done_all, size: 16, color: Colors.white),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    );
+  }
+}
+
+class ChatBubble extends StatelessWidget {
+  final bool isSender;
+  final String text;
+  final String time;
+
+  const ChatBubble({
+    super.key,
+    required this.isSender,
+    required this.text,
+    required this.time,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isSender ? const Color(0xFF88C9FF) : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment:
+              isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Text(
+              text,
+              style: const TextStyle(color: Colors.black),
             ),
-          ),
-          // Input chat
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-            color: Colors.white,
-            child: Row(
-              children: [
-                const Icon(Icons.attach_file_outlined),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Ketik Pesan...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: const Color(0xFFF2F2F2),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                const Icon(Icons.camera_alt_outlined),
-              ],
+            const SizedBox(height: 4),
+            Text(
+              time,
+              style: TextStyle(
+                fontSize: 10,
+                color: Colors.grey[700],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

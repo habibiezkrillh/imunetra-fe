@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false, // Mematikan debug banner yang pakbal
       title: 'Chat App',
       theme: AppTheme.lightTheme,
       routerConfig: router, // go_router (Ada di file routes/router.dart)

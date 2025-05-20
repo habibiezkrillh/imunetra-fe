@@ -1,159 +1,94 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../utils/constants.dart';
-import '../../../bloc/chat_bloc.dart';
-import '../../../bloc/chat_state.dart';
-import '../../../bloc/chat_event.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatView extends StatelessWidget {
   const ChatView({super.key});
 
+  static const List<Map<String, dynamic>> dummyChats = [
+    {
+      'name': 'Leonard',
+      'message': 'Halo, boleh tahu lebih dalam mengenai acaranya?',
+      'time': '10:00',
+      'unread': false,
+      'partner': false,
+    },
+    {
+      'name': 'Astra',
+      'message': 'Kami tertarik untuk berpartisipasi dalam acara tersebut.',
+      'time': '09:30',
+      'unread': true,
+      'partner': true,
+    },
+    {
+      'name': 'BNI',
+      'message': 'Apakah ada proposal yang bisa dikirimkan?',
+      'time': '08:45',
+      'unread': true,
+      'partner': true,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              const Center(
-                child: Text(
-                  'Pesan',
-                  style: TextStyle(
-                    fontFamily: kFontFamily,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              _buildSearchBar(),
-              const SizedBox(height: 16),
-              _buildFilterTabs(context),
-              const SizedBox(height: 16),
-              Expanded(child: _buildChatList(context)),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chat'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Semua'),
+              Tab(text: 'Belum Dibaca'),
+              Tab(text: 'Perusahaan Kerjasama'),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Silahkan Mencari..',
-        hintStyle: const TextStyle(
-          fontFamily: kFontFamily,
-          fontSize: 14,
-          color: Colors.grey,
-        ),
-        prefixIcon: const Icon(Icons.search),
-        filled: true,
-        fillColor: Colors.grey.shade100,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterTabs(BuildContext context) {
-    return BlocBuilder<ChatBloc, ChatState>(
-      builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: const TabBarView(
           children: [
-            _buildTabButton(context, "Semua", 0, state.selectedIndex),
-            _buildTabButton(context, "Belum Dibaca", 1, state.selectedIndex),
-            _buildTabButton(context, "Perusahaan Kerjasama", 2, state.selectedIndex),
+            ChatList(filter: 'all'),
+            ChatList(filter: 'unread'),
+            ChatList(filter: 'partner'),
           ],
-        );
-      },
-    );
-  }
-
-  Widget _buildTabButton(BuildContext context, String text, int index, int selectedIndex) {
-    final bool isSelected = selectedIndex == index;
-    return ElevatedButton(
-      onPressed: () {
-        context.read<ChatBloc>().add(ChangeTabEvent(index));
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: isSelected ? kPrimaryColor : Colors.grey.shade200,
-        foregroundColor: isSelected ? Colors.white : Colors.black,
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(fontFamily: kFontFamily),
+        ),
       ),
     );
   }
+}
 
-  Widget _buildChatList(BuildContext context) {
-    return ListView.separated(
-      itemCount: 3,
-      separatorBuilder: (_, __) => const Divider(),
+class ChatList extends StatelessWidget {
+  final String filter;
+
+  const ChatList({super.key, required this.filter});
+
+  List<Map<String, dynamic>> getFilteredChats() {
+    if (filter == 'unread') {
+      return ChatView.dummyChats.where((chat) => chat['unread'] == true).toList();
+    } else if (filter == 'partner') {
+      return ChatView.dummyChats.where((chat) => chat['partner'] == true).toList();
+    } else {
+      return ChatView.dummyChats;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chats = getFilteredChats();
+
+    return ListView.builder(
+      itemCount: chats.length,
       itemBuilder: (context, index) {
-        final List<String> names = ["Astra", "Telkom", "Alfamart"];
-        final List<String> companies = [
-          "Leonard",
-          "Aurel",
-          "Habbibie"
-        ];
-        final List<String> times = ["10:00", "09:00", "08:55"];
-
+        final chat = chats[index];
         return ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: CircleAvatar(
-            backgroundImage: const AssetImage('assets/images/profile.jpg'), // Placeholder
-            radius: 24,
-          ),
-          title: Text(
-            names[index],
-            style: const TextStyle(
-              fontFamily: kFontFamily,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          subtitle: Text(
-            "Halo, boleh tahu lebih dalam mengenai acaranya?",
-            style: const TextStyle(fontFamily: kFontFamily),
-          ),
-          trailing: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                times[index],
-                style: const TextStyle(fontFamily: kFontFamily),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: 20,
-                height: 20,
-                decoration: const BoxDecoration(
-                  color: kPrimaryColor,
-                  shape: BoxShape.circle,
-                ),
-                child: const Center(
-                  child: Text(
-                    '2',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontFamily: kFontFamily,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          leading: CircleAvatar(child: Text(chat['name'][0])),
+          title: Text(chat['name']),
+          subtitle: Text(chat['message']),
+          trailing: Text(chat['time']),
+          onTap: () {
+            context.pushNamed(
+              'chat-detail',
+              pathParameters: {'name': chat['name']},
+            );
+          },
         );
       },
     );
