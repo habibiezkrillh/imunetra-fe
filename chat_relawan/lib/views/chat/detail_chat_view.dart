@@ -14,77 +14,114 @@ class DetailChatView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(senderName),
-      ),
-      body: Container(
-        color: const Color(0xFFE5F2FF), // warna latar belakang seperti desainmu
-        padding: const EdgeInsets.all(12),
-        child: Column(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Row(
           children: [
-            const ChatBubble(
-              isSender: false,
-              text: 'Halo, boleh tahu lebih dalam mengenai acaranya?',
-              time: '10:00',
-            ),
-            const ChatBubble(
-              isSender: true,
-              text: 'Selamat siang, Kak. Jadi nanti kita akan membersihkan sungai jenebrang',
-              time: '10:05',
-            ),
-            const ChatBubble(
-              isSender: true,
-              text: 'Dari perusahaan Kakak sendiri apakah tertarik untuk mensponsori acara Kami?',
-              time: '10:06',
-            ),
+            CircleAvatar(child: Text(senderName[0])),
+            const SizedBox(width: 8),
+            Text(senderName),
           ],
         ),
+        actions: const [
+          Icon(Icons.call),
+          SizedBox(width: 16),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                _buildSenderBubble(
+                  message: 'Halo, boleh tahu lebih dalam mengenai acaranya?',
+                  time: '10:00',
+                ),
+                const SizedBox(height: 16),
+                _buildUserBubble(
+                  message: 'Selamat siang, Kak. Jadi nanti kita akan membersihkan sungai jenebarang',
+                  time: '10:05',
+                ),
+              ],
+            ),
+          ),
+          _buildInputArea(),
+        ],
       ),
     );
   }
 }
 
-class ChatBubble extends StatelessWidget {
-  final bool isSender;
-  final String text;
-  final String time;
-
-  const ChatBubble({
-    super.key,
-    required this.isSender,
-    required this.text,
-    required this.time,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isSender ? const Color(0xFF88C9FF) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+Widget _buildSenderBubble({required String message, required String time}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.all(12),
+          child: Text(message),
         ),
-        child: Column(
-          crossAxisAlignment:
-              isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        const SizedBox(height: 4),
+        Text(
+          time,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+Widget _buildUserBubble({required String message, required String time}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.blue[100],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          padding: const EdgeInsets.all(12),
+          child: Text(message),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          time,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInputArea() {
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: Colors.grey, width: 0.3)),
+        ),
+        child: Row(
           children: [
-            Text(
-              text,
-              style: const TextStyle(color: Colors.black),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              time,
-              style: TextStyle(
-                fontSize: 10,
-                color: Colors.grey[700],
+            const Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Ketik Pesan...',
+                  border: InputBorder.none,
+                ),
               ),
             ),
+            IconButton(
+              icon: const Icon(Icons.send),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
     );
   }
-}
