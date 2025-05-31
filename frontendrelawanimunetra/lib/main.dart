@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'views/login.dart';
-import 'views/register.dart';
-import 'views/dashboard.dart';
+import 'package:frontendtenagamedisimunetra/views/login.dart';
+import 'package:frontendtenagamedisimunetra/views/register.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -14,13 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Imunetra',
+      title: 'Login/Register Demo',
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
-        '/dashboard': (context) => const DashboardPage(), // Tambahkan ini
+        '/': (context) => const LoginView(),
+        '/register': (context) => const RegisterView(),
       },
     );
   }
