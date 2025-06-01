@@ -1,278 +1,295 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:frontendtenagamedisimunetra/views/login.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
   @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  final _formKey = GlobalKey<FormState>();
+  bool _agreeTerms = false;
+  File? _ktpImage;
+
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final cityController = TextEditingController();
+  final phoneController = TextEditingController();
+  final birthDateController = TextEditingController();
+  final addressController = TextEditingController();
+
+  Future<void> _pickKTP() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      setState(() {
+        _ktpImage = File(picked.path);
+      });
+    }
+  }
+
+  Widget _buildTextField({
+    required String hintText,
+    required IconData icon,
+    required TextEditingController controller,
+    bool obscure = false,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          )
+        ],
+      ),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscure,
+        keyboardType: keyboardType,
+        style: GoogleFonts.poppins(),
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: GoogleFonts.poppins(color: Colors.grey),
+          prefixIcon: Icon(icon, color: const Color(0xFF3B6BFD)),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+        ),
+      ),
+    );
+  }
+
+  void _handleRegister() {
+    if (_formKey.currentState!.validate() && _agreeTerms) {
+      print('Register Success');
+      // TODO: Simpan data dan kirim ke backend
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF3B6BFD);
-
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6FA),
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Background Image
-            SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: Image.asset(
-                'assets/images/BG.jpg',
-                fit: BoxFit.cover,
-              ),
-            ),
-
-            // Main content
-            Column(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 120),
-                Expanded(
+                const SizedBox(height: 40),
+                Center(
+                  child: Image.asset(
+                    'assets/images/Logo.jpg',
+                    height: 80,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Silahkan Daftarkan Diri \nAnda',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildTextField(
+                  hintText: 'Nama Lengkap',
+                  icon: Icons.person,
+                  controller: fullNameController,
+                ),
+                _buildTextField(
+                  hintText: 'Alamat Email',
+                  icon: Icons.email,
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                _buildTextField(
+                  hintText: 'Kata Sandi',
+                  icon: Icons.lock,
+                  controller: passwordController,
+                  obscure: true,
+                ),
+                _buildTextField(
+                  hintText: 'Konfirmasi Kata Sandi',
+                  icon: Icons.lock_outline,
+                  controller: confirmPasswordController,
+                  obscure: true,
+                ),
+                _buildTextField(
+                  hintText: 'Kota Domisili',
+                  icon: Icons.location_city,
+                  controller: cityController,
+                ),
+                _buildTextField(
+                  hintText: 'Nomor Telepon',
+                  icon: Icons.phone,
+                  controller: phoneController,
+                  keyboardType: TextInputType.phone,
+                ),
+                _buildTextField(
+                  hintText: 'Tanggal Lahir',
+                  icon: Icons.calendar_today,
+                  controller: birthDateController,
+                ),
+                _buildTextField(
+                  hintText: 'Alamat Lengkap',
+                  icon: Icons.home,
+                  controller: addressController,
+                ),
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: _pickKTP,
                   child: Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 12,
-                          offset: const Offset(0, 6),
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 60), // space for logo
-
-                          // Label Username
-                          Text(
-                            'Username',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              hintText: 'Enter your username here',
-                              hintStyle: TextStyle(color: Colors.grey[600]),
-                              prefixIcon: Icon(Icons.person, color: primaryColor),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade300),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: primaryColor),
-                                borderRadius: BorderRadius.circular(12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.image, color: Color(0xFF3B6BFD)),
+                            const SizedBox(width: 10),
+                            Text(
+                              _ktpImage == null ? 'Unggah KTP' : 'KTP Terpilih',
+                              style: GoogleFonts.poppins(
+                                color: _ktpImage == null ? Colors.grey : Colors.black87,
                               ),
                             ),
+                          ],
+                        ),
+                        const Icon(Icons.upload, color: Colors.grey),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _agreeTerms = !_agreeTerms;
+                          });
+                        },
+                        child: Container(
+                          width: 16,
+                          height: 16,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black),
                           ),
-                          const SizedBox(height: 16),
-
-                          // Label Email
-                          Text(
-                            'Email',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          TextFormField(
-                            decoration: InputDecoration(
-                              hintText: 'Enter your email here',
-                              hintStyle: TextStyle(color: Colors.grey[600]),
-                              prefixIcon: Icon(Icons.email, color: primaryColor),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade300),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: primaryColor),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Label Password
-                          Text(
-                            'Password',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Enter your password here',
-                              hintStyle: TextStyle(color: Colors.grey[600]),
-                              prefixIcon: Icon(Icons.lock, color: primaryColor),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade300),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: primaryColor),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Label Confirm Password
-                          Text(
-                            'Confirm Password',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          TextFormField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Re-enter your password here',
-                              hintStyle: TextStyle(color: Colors.grey[600]),
-                              prefixIcon: Icon(Icons.lock, color: primaryColor),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey.shade300),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: primaryColor),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-
-                          // Register Button
-                          Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Tambahkan logic register di sini
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: primaryColor,
-                                minimumSize: const Size(250, 52),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: Text(
-                                "Register",
-                                style: GoogleFonts.poppins(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-
-                          // Bottom Login Text
-                          Center(
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.pop(context); // kembali ke login
-                              },
-                              child: RichText(
-                                textAlign: TextAlign.center,
-                                text: TextSpan(
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                  children: [
-                                    const TextSpan(
-                                      text: "Already have an account? ",
-                                      style: TextStyle(
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                          child: _agreeTerms
+                              ? Center(
+                                  child: Container(
+                                    width: 8,
+                                    height: 8,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xFF3B6BFD),
                                     ),
-                                    TextSpan(
-                                      text: "Log in here",
-                                      style: const TextStyle(
-                                        color: Color(0xFF3B6BFD),
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                  ),
+                                )
+                              : null,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Saya Setuju dengan Segala Syarat & Ketentuan yang berlaku di Aplikasi Imunetra',
+                        style: GoogleFonts.poppins(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: GestureDetector(
+                    onTap: _handleRegister,
+                    child: Container(
+                      width: 300,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF3B6BFD),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Daftar',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
-                          const SizedBox(height: 24),
-                        ],
+                        ),
                       ),
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Sudah Punya Akun?',
+                        style: GoogleFonts.poppins(fontSize: 14),
+                      ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginView(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          ' Masuk',
+                          style: GoogleFonts.poppins(
+                            color: const Color(0xFF3B6BFD),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 40),
               ],
             ),
-
-            // Register Text + Logo (Positioned)
-            Positioned(
-              top: 40,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  Text(
-                    'Register',
-                    style: GoogleFonts.poppins(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Image.asset(
-                      'assets/images/Logo.jpg',
-                      height: 60,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
