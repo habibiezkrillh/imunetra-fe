@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:imunetra/bloc/OnBoarding_bloc.dart';
 import 'package:imunetra/services/onBoard_service.dart';
-
 
 class OnboardingPage extends StatelessWidget {
   final PageController _controller = PageController();
@@ -17,6 +17,9 @@ class OnboardingPage extends StatelessWidget {
           child: BlocBuilder<OnboardingCubit, OnboardingState>(
             builder: (context, state) {
               final cubit = context.read<OnboardingCubit>();
+              final screenWidth = MediaQuery.of(context).size.width;
+              final screenHeight = MediaQuery.of(context).size.height;
+
               return Column(
                 children: [
                   Expanded(
@@ -26,23 +29,43 @@ class OnboardingPage extends StatelessWidget {
                       onPageChanged: cubit.updatePage,
                       itemBuilder: (_, index) {
                         final data = state.pages[index];
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(data.image, width: 300, height: 200),
-                            SizedBox(height: 30),
-                            Text(data.title, style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                            SizedBox(height: 16),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: Text(data.desc, textAlign: TextAlign.center, style: TextStyle(fontSize: 18)),
+                        return SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(height: 80),
+                                Text(
+                                  "Imunetra",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                Image.asset(
+                                  data.image,
+                                  width: screenWidth * 0.9,
+                                  height: screenHeight * 0.4,
+                                  fit: BoxFit.contain,
+                                ),
+                                SizedBox(height: 24),
+                                Text(
+                                  data.desc,
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 17,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         );
                       },
                     ),
                   ),
-                  SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
@@ -59,62 +82,91 @@ class OnboardingPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 24),
+                  SizedBox(height: 60),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Kosongkan navigasi
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF484848),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
+                      child: (state.currentPage < state.pages.length - 1)
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  child: TextButton(
+                                    onPressed: () {
+                                      _controller.animateToPage(
+                                        state.pages.length - 1,
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeInOut,
+                                      );
+                                      cubit.updatePage(state.pages.length - 1);
+                                    },
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Colors.black,
+                                      padding: EdgeInsets.symmetric(vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      textStyle: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    child: Text("Lewati"),
+                                  ),
+                                ),
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      _controller.nextPage(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeInOut,
+                                      );
+                                      cubit.nextPage();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF3B6BFD),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: 20), // Tambah tinggi
+                                      minimumSize: Size(0, 60), // Atur tinggi minimum
+                                    ),
+                                    child: Text(
+                                      "Lanjut",
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontSize: 16, // Lebih besar
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Center(
+                            child: SizedBox(
+                                width: 250,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    // Navigasi ke halaman selanjutnya
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xFF3B6BFD),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Mulai Sekarang",
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              child: Text(
-                                "Lewati",
-                                style: TextStyle(color: Colors.white, fontSize: 16),
-                              ),
-                            ),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (state.currentPage < state.pages.length - 1) {
-                                  _controller.nextPage(
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                  );
-                                  cubit.nextPage();
-                                } else {
-                                  // Kosongkan navigasi akhir
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF3B6BFD),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              child: Text(
-                                state.currentPage == state.pages.length - 1 ? "Mulai" : "Lanjut",
-                                style: TextStyle(color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
-                  SizedBox(height: 32),
+                  SizedBox(height: 90),
                 ],
               );
             },

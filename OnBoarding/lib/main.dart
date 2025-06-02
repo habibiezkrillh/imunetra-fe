@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:imunetra/Views/Splashscreen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:imunetra/Views/OnBoarding.dart';
+import 'package:imunetra/Views/SplashScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812), 
-      minTextAdapt: true,
-      builder: (context, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: SplashScreen(),  
-        );
-      },
+    return MaterialApp(
+      title: 'Imunetra',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(), // Pakai Poppins dari Google Fonts
+        scaffoldBackgroundColor: Colors.white,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+      ),
+      home: SplashScreen(),
     );
   }
 }
