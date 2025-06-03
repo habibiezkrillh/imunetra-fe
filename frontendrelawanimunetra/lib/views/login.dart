@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontendtenagamedisimunetra/views/dashboard.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontendtenagamedisimunetra/views/register.dart';
 
@@ -84,18 +85,21 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  void _handleLogin() {
-    setState(() {
-      _usernameError = usernameController.text.isEmpty;
-      _passwordError = passwordController.text.isEmpty;
-    });
+void _handleLogin() {
+  setState(() {
+    _usernameError = usernameController.text.isEmpty;
+    _passwordError = passwordController.text.isEmpty;
+  });
 
-    if (!_usernameError && !_passwordError) {
-      print("Username: ${usernameController.text}");
-      print("Password: ${passwordController.text}");
-      // TODO: Proses login atau pindah ke halaman berikutnya
-    }
+  if (!_usernameError && !_passwordError) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DashboardPage(),
+      ),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
