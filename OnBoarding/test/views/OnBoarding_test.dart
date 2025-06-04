@@ -1,63 +1,59 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:imunetra/views/OnBoarding.dart';
+import 'package:imunetra/Views/OnBoarding.dart';
 
 void main() {
-  group('OnboardingPage Widget Test', () {
-    testWidgets('Menampilkan halaman pertama dengan elemen penting', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: OnboardingPage()));
-      await tester.pumpAndSettle();
+  testWidgets('OnboardingScreen shows first page correctly', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: OnboardingScreen()));
 
-      expect(find.byKey(Key('title')), findsOneWidget);
-      expect(find.byKey(Key('onboarding_image')), findsOneWidget);
-      expect(find.byKey(Key('description')), findsOneWidget);
-      expect(find.byKey(Key('lewati_button')), findsOneWidget);
-      expect(find.byKey(Key('lanjut_button')), findsOneWidget);
-    });
+    // Cek halaman pertama muncul
+    expect(find.text('Peduli Sejak Dini'), findsOneWidget);
+    expect(find.text('Bersama kita cegah pneumonia pada anak-anak yang membutuhkan perhatian lebih.'), findsOneWidget);
+    expect(find.byType(Image), findsOneWidget);
+    expect(find.text('Skip'), findsOneWidget);
 
-    testWidgets('Mengklik tombol Lanjut berpindah halaman', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: OnboardingPage()));
-      await tester.pumpAndSettle();
+    // Cek dot indikator halaman pertama
+    final firstDot = tester.widget<Container>(find.byType(Container).at(0));
+    expect((firstDot.decoration as BoxDecoration).color, Color(0xff3B6BFD));
+  });
 
-      final lanjutButton = find.byKey(Key('lanjut_button'));
-      expect(lanjutButton, findsOneWidget);
+  testWidgets('Tombol next berpindah ke halaman kedua dan ketiga', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: OnboardingScreen()));
 
-      await tester.tap(lanjutButton);
-      await tester.pumpAndSettle();
+    // Tap tombol next ke halaman kedua
+    await tester.tap(find.byIcon(Icons.arrow_forward));
+    await tester.pumpAndSettle();
 
-      // Harusnya pindah halaman, deskripsi berubah
-      expect(find.byKey(Key('description')), findsOneWidget);
-    });
+    // Cek halaman kedua muncul
+    expect(find.text('Dukung Aksi Cepat'), findsOneWidget);
+    expect(find.text('Bantu relawan dan puskesmas mendeteksi gejala lebih cepat di daerah terpencil.'), findsOneWidget);
 
-    testWidgets('Klik tombol Lewati membawa ke halaman terakhir', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: OnboardingPage()));
-      await tester.pumpAndSettle();
+    // Cek dot indikator halaman kedua
+    final secondDot = tester.widget<Container>(find.byType(Container).at(1));
+    expect((secondDot.decoration as BoxDecoration).color, Color(0xff3B6BFD));
 
-      final lewatiButton = find.byKey(Key('lewati_button'));
-      expect(lewatiButton, findsOneWidget);
+    // Tap tombol next ke halaman ketiga
+    await tester.tap(find.byIcon(Icons.arrow_forward));
+    await tester.pumpAndSettle();
 
-      await tester.tap(lewatiButton);
-      await tester.pumpAndSettle();
+    // Cek halaman ketiga muncul
+    expect(find.text('Mulai Dari Sekarang'), findsOneWidget);
+    expect(find.text('Mulai langkah awal untuk mencegah bahaya pneumonia sejak dini.'), findsOneWidget);
 
-      final mulaiSekarangButton = find.byKey(Key('mulai_sekarang_button'));
-      expect(mulaiSekarangButton, findsOneWidget);
-    });
+    // Cek dot indikator halaman ketiga
+    final thirdDot = tester.widget<Container>(find.byType(Container).at(2));
+    expect((thirdDot.decoration as BoxDecoration).color, Color(0xff3B6BFD));
+  });
 
-    testWidgets('Tombol Mulai Sekarang bisa ditekan tanpa error', (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(home: OnboardingPage()));
-      await tester.pumpAndSettle();
+  testWidgets('Tombol Skip ada dan dapat ditekan', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: OnboardingScreen()));
 
-      // Langsung ke halaman terakhir
-      await tester.tap(find.byKey(Key('lewati_button')));
-      await tester.pumpAndSettle();
+    expect(find.text('Skip'), findsOneWidget);
 
-      final mulaiSekarangButton = find.byKey(Key('mulai_sekarang_button'));
-      expect(mulaiSekarangButton, findsOneWidget);
+    await tester.tap(find.text('Skip'));
+    await tester.pump();
 
-      await tester.tap(mulaiSekarangButton);
-      await tester.pumpAndSettle();
-
-      // Belum ada navigasi, tapi memastikan tidak error
-    });
+    // Karena tombol Skip belum navigasi, tidak ada perubahan UI, cukup memastikan tombol bisa ditekan tanpa error
   });
 }
