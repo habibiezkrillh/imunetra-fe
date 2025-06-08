@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontendtenagamedisimunetra/views/dashboard.dart';
+import 'package:frontendtenagamedisimunetra/views/forgot_pass.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontendtenagamedisimunetra/views/register.dart';
 
@@ -154,8 +155,15 @@ void _handleLogin() {
                           obscure: true,
                         ),
                         const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.centerRight,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ForgotPasswordView(),
+                              ),
+                            );
+                          },
                           child: Text(
                             'Lupa Kata Sandi?',
                             style: GoogleFonts.poppins(

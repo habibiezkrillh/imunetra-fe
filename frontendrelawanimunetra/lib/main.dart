@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontendtenagamedisimunetra/views/dashboard.dart';
-import 'package:frontendtenagamedisimunetra/views/login.dart';
+import 'package:frontendtenagamedisimunetra/views/forgot_pass.dart';
 import 'package:frontendtenagamedisimunetra/views/register.dart';
 
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) =>  DashboardPage(),
+        '/': (context) =>  ForgotPasswordView(),
         '/register': (context) => const RegisterView(),
         '/dashboard':(context)=>  DashboardPage(),
       },
