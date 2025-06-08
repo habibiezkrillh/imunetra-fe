@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontendtenagamedisimunetra/views/otp_verification.dart';
+import 'package:frontendtenagamedisimunetra/views/email_sent.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForgotPasswordView extends StatelessWidget {
@@ -65,7 +65,7 @@ class ForgotPasswordView extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context, 
-                    CupertinoPageRoute(builder: (context) => const OTPVerificationView()),
+                    CupertinoPageRoute(builder: (context) => const EmailSentPage(email: '',)),
                   );
                 },
                 style: ElevatedButton.styleFrom(

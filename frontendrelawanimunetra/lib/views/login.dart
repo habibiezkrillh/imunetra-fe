@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontendtenagamedisimunetra/views/dashboard.dart';
 import 'package:frontendtenagamedisimunetra/views/forgot_pass.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontendtenagamedisimunetra/views/register.dart';
@@ -96,7 +95,7 @@ void _handleLogin() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => DashboardPage(),
+        builder: (context) => ForgotPasswordView(), //untuk sementara karena dashboard pisah
       ),
     );
   }
