@@ -9,4 +9,6 @@ class AuthRepository {
   Future<bool> login({required String username, required String password}) async {
     return await authService.login(username, password);
   }
+
+  Future<void> forgotPassword(String email) async {}
 }

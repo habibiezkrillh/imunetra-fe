@@ -39,7 +39,7 @@ class _LoginViewState extends State<LoginView> {
               if (state.isSuccess) {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const ForgotPasswordView()),
+                  MaterialPageRoute(builder: (_) =>  ForgotPasswordView()),
                 );
               } else if (state.isFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -86,7 +86,7 @@ class _LoginViewState extends State<LoginView> {
                       child: GestureDetector(
                         onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const ForgotPasswordView()),
+                          MaterialPageRoute(builder: (_) =>  ForgotPasswordView()),
                         ),
                         child: Text(
                           'Lupa Kata Sandi?',
