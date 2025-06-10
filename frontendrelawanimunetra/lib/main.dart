@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login/Register Demo',
+      title: 'Login/Register Imunetra POV Relawan',
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
