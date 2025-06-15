@@ -13,3 +13,16 @@ class AuthService {
     }
   }
 }
+
+class OTPService {
+  Future<bool> sendOTP(String email) async {
+    await Future.delayed(Duration(seconds: 1));
+    return true; // simulasi sukses
+  }
+
+  Future<bool> verifyOTP(String otp) async {
+    await Future.delayed(Duration(seconds: 1));
+    return otp == "1234"; // contoh verifikasi
+  }
+}
+

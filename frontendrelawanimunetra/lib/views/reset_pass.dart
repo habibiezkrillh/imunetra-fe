@@ -18,7 +18,7 @@ class ResetPasswordView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 90),
             Text(
               'Atur Ulang Kata Sandi',
               style: GoogleFonts.poppins(
@@ -74,9 +74,12 @@ class ResetPasswordView extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {
-                  // Simpan kata sandi dan kembali ke login
-                  Navigator.pop(context);
+                onPressed: 
+                context,  {
+        onPressed: () {
+                              final email = emailController.text.trim();
+                              context.read<ForgotPasswordBloc>().add(SubmitForgotPassword(email));
+                            },
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3D7CFF),

@@ -19,6 +19,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  bool _isPasswordVisible = false; 
 
   @override
   void dispose() {
@@ -39,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
               if (state.isSuccess) {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) =>  ForgotPasswordView()),
+                  MaterialPageRoute(builder: (_) => ForgotPasswordView()),
                 );
               } else if (state.isFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -62,6 +63,7 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(height: 40),
                     Text(
                       'Selamat Datang Kembali\nke Imunetra',
+                      textAlign: TextAlign.left,
                       style: GoogleFonts.poppins(
                         fontWeight: FontWeight.w600,
                         fontSize: 24,
@@ -86,7 +88,7 @@ class _LoginViewState extends State<LoginView> {
                       child: GestureDetector(
                         onTap: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) =>  ForgotPasswordView()),
+                          MaterialPageRoute(builder: (_) => ForgotPasswordView()),
                         ),
                         child: Text(
                           'Lupa Kata Sandi?',
@@ -180,10 +182,23 @@ class _LoginViewState extends State<LoginView> {
       ),
       child: TextFormField(
         controller: controller,
-        obscureText: isPassword,
+        obscureText: isPassword ? !_isPasswordVisible : false,
         decoration: InputDecoration(
           hintText: hintText,
           prefixIcon: Icon(icon, color: const Color(0xFF3B6BFD)),
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(
+                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    color: const Color(0xFF3B6BFD),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                )
+              : null,
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
         ),
