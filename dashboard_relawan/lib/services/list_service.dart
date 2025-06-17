@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import 'package:dashboard_relawan/model/dashboard/user_model.dart';
 
 class ActivityService {
@@ -13,6 +14,20 @@ class ActivityService {
         image: 'https://via.placeholder.com/400x300',
         participantCount: 30,
         capacity: 50,
+=======
+import 'package:dashboard_relawan/model/list_kegiatan/list_model.dart';
+
+class EventService {
+  Future<List<EventModel>> fetchEvents() async {
+    await Future.delayed(Duration(seconds: 1)); // Simulasi delay
+    return [
+      EventModel(
+        title: 'Desa Sehat Ta\'',
+        date: '20 - 22 Juni 2025',
+        time: '10.00 - 16.00',
+        location: 'Desa Kanjilo',
+        imageUrl: 'assets/images/card.jpg',
+>>>>>>> Stashed changes
       ),
     ];
   }

@@ -1,4 +1,5 @@
 class Activity {
+<<<<<<< Updated upstream
   final String title;
   final String date;
   final String location;
@@ -18,4 +19,11 @@ class Activity {
   get time => null;
 
   static fromJson(item) {}
+=======
+  final String date;
+  final String title;
+  final String imagePath;
+
+  Activity({required this.date, required this.title, required this.imagePath});
+>>>>>>> Stashed changes
 }
