@@ -1,7 +1,11 @@
-import 'package:dashboard_relawan/model/dashboard/user_model.dart';
-<<<<<<< Updated upstream
+import 'package:equatable/equatable.dart';
 
-abstract class DashboardState {}
+abstract class DashboardState extends Equatable {
+  const DashboardState();
+
+  @override
+  List<Object?> get props => [];
+}
 
 class DashboardInitial extends DashboardState {}
 
@@ -10,40 +14,17 @@ class DashboardLoading extends DashboardState {}
 class DashboardLoaded extends DashboardState {
   final List<Activity> activities;
 
-  DashboardLoaded({required this.activities});
-}
-
-class DashboardError extends DashboardState {
-  final String message;
-
-  DashboardError({required this.message});
-=======
-import 'package:equatable/equatable.dart';
-
-abstract class HomeState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
-
-class HomeInitial extends HomeState {}
-
-class HomeLoading extends HomeState {}
-
-class HomeLoaded extends HomeState {
-  final List<Activity> activities;
-
-  HomeLoaded(this.activities);
+  const DashboardLoaded({required this.activities});
 
   @override
   List<Object?> get props => [activities];
 }
 
-class HomeError extends HomeState {
+class DashboardError extends DashboardState {
   final String message;
 
-  HomeError(this.message);
+  const DashboardError({required this.message});
 
   @override
   List<Object?> get props => [message];
->>>>>>> Stashed changes
 }
