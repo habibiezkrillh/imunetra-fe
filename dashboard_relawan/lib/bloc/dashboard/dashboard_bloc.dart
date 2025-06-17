@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_event.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_state.dart';
-import 'package:dashboard_relawan/services/api_service.dart'; // ← pastikan ini
+import 'package:dashboard_relawan/services/dashboard/api_service.dart'; // ← pastikan ini
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardService service;

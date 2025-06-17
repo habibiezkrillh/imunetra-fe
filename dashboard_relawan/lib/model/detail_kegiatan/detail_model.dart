@@ -1,23 +1,21 @@
-class Activity {
+class DetailModel {
   final String title;
   final String date;
   final String location;
-  final String image;
   final String time;
+  final String imageUrl;
   final int capacity;
   final int participantCount;
+  final String description;
 
-  Activity({
+  DetailModel({
     required this.title,
     required this.date,
     required this.location,
-    required this.image,
     required this.time,
+    required this.imageUrl,
     required this.capacity,
-    required this.participantCount, 
-    required String description, 
+    required this.participantCount,
+    required this.description,
   });
-
-  String? get description => null;
-
 }

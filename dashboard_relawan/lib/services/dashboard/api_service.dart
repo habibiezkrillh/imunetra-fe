@@ -1,4 +1,5 @@
-import '../model/dashboard/user_model.dart';
+import 'package:dashboard_relawan/model/dashboard/user_model.dart';
+
 
 class DashboardService {
   DashboardService();
@@ -15,7 +16,8 @@ class DashboardService {
         image: 'assets/images/event1.jpg',
         time: '08:00',
         capacity: 35,
-        participantCount: 21,
+        participantCount: 21, 
+        description: '',
       ),
       Activity(
         title: "Kegiatan Sehat Desa",
@@ -24,7 +26,8 @@ class DashboardService {
         image: 'assets/images/event2.jpg',
         time: '09:30',
         capacity: 35,
-        participantCount: 21,
+        participantCount: 21, 
+        description: '',
       ),
       Activity(
         title: "Kegiatan Desa Relawan",
@@ -33,7 +36,8 @@ class DashboardService {
         image: 'assets/images/event3.jpg',
         time: '10:00',
         capacity: 35,
-        participantCount: 21,
+        participantCount: 21, 
+        description: '',
       ),
       Activity(
         title: "Kegiatan Abadi Sehat",
@@ -42,7 +46,8 @@ class DashboardService {
         image: 'assets/images/event4.jpg',
         time: '13:00',
         capacity: 35,
-        participantCount: 21,
+        participantCount: 21, 
+        description: '',
       ),
       Activity(
         title: "Kegiatan Relawan Sehat",
@@ -51,7 +56,8 @@ class DashboardService {
         image: 'assets/images/event5.jpg',
         time: '15:00',
         capacity: 35,
-        participantCount: 21,
+        participantCount: 21, 
+        description: '',
       ),
     ];
   }

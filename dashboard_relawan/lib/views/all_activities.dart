@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dashboard_relawan/model/dashboard/user_model.dart';
+import 'package:dashboard_relawan/views/detail_kegiatan.dart';
 
 class AllActivitiesPage extends StatefulWidget {
   final String title;
@@ -111,102 +112,109 @@ class _AllActivitiesPageState extends State<AllActivitiesPage> {
   }
 
   Widget _buildActivityCard(Activity activity) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeInOut,
-      margin: const EdgeInsets.only(bottom: 16),
-      height: 210,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ActivityDetailPage(activity: activity, activityId: '',),
           ),
-        ],
-        image: DecorationImage(
-          image: NetworkImage(activity.image),
-          fit: BoxFit.cover,
+        );
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+        margin: const EdgeInsets.only(bottom: 16),
+        height: 210,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          image: DecorationImage(
+            image: NetworkImage(activity.image),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              gradient: LinearGradient(
-                colors: [
-                  Colors.black.withOpacity(0.65),
-                  Colors.transparent,
-                ],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  activity.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Spacer(),
-                Row(
-                  children: [
-                    const Icon(Icons.calendar_today, color: Colors.white, size: 14),
-                    const SizedBox(width: 6),
-                    Text(activity.date, style: const TextStyle(color: Colors.white, fontSize: 12)),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.access_time, color: Colors.white, size: 14),
-                    const SizedBox(width: 6),
-                    Text(activity.time ?? "08.00 WITA", style: const TextStyle(color: Colors.white, fontSize: 12)),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.location_on, color: Colors.white, size: 14),
-                    const SizedBox(width: 6),
-                    Text(activity.location, style: const TextStyle(color: Colors.white, fontSize: 12)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 12,
-            right: 16,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        child: Stack(
+          children: [
+            Container(
               decoration: BoxDecoration(
-                color: Colors.blueAccent.withOpacity(0.9),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  colors: [Colors.black.withOpacity(0.65), Colors.transparent],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
               ),
-              child: Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.people, size: 14, color: Colors.white),
-                  const SizedBox(width: 6),
                   Text(
-                    "${activity.participantCount}/${activity.capacity}",
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    activity.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      const Icon(Icons.calendar_today, color: Colors.white, size: 14),
+                      const SizedBox(width: 6),
+                      Text(activity.date, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.access_time, color: Colors.white, size: 14),
+                      const SizedBox(width: 6),
+                      Text(activity.time ?? "08.00 WITA", style: const TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on, color: Colors.white, size: 14),
+                      const SizedBox(width: 6),
+                      Text(activity.location, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            Positioned(
+              bottom: 12,
+              right: 16,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.people, size: 14, color: Colors.white),
+                    const SizedBox(width: 6),
+                    Text(
+                      "${activity.participantCount}/${activity.capacity}",
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
