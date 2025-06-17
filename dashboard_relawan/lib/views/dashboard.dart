@@ -1,6 +1,7 @@
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_bloc.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_event.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_state.dart';
+import 'package:dashboard_relawan/model/dashboard/user_model.dart';
 import 'package:dashboard_relawan/views/all_activities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

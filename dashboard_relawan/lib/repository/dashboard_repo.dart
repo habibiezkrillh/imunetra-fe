@@ -1,4 +1,5 @@
-import '../services//api.service.dart';
+import 'package:dashboard_relawan/services/api_service.dart';
+import '../model/dashboard/user_model.dart';
 
 class DashboardRepo {
   final DashboardService service;
