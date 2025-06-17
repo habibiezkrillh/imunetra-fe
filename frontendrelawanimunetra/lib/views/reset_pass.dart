@@ -75,12 +75,8 @@ class ResetPasswordView extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: 
-                context,  {
-        onPressed: () {
-                              final email = emailController.text.trim();
-                              context.read<ForgotPasswordBloc>().add(SubmitForgotPassword(email));
-                            },
-                },
+                context,  
+              ,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF3D7CFF),
                   shape: RoundedRectangleBorder(

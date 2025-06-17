@@ -1,5 +1,6 @@
+import 'dart:io';
+
 class AuthService {
-  // Simulasi login (ganti dengan request API nyata)
   Future<bool> login(String username, String password) async {
     await Future.delayed(const Duration(seconds: 1));
     return username == 'admin' && password == 'admin';
@@ -12,6 +13,10 @@ class AuthService {
       throw Exception("Email tidak ditemukan");
     }
   }
+
+  Future registerRelawan({required String nama, required String email, required String katasandi, required String kota, required String telepon, required String alamat, required String tanggallahir, File? ktpImage}) async {}
+
+  Future register({required String nama, required String email, required String password, required String kota, required String telepon, required String tanggalLahir, required String alamat, required String ktpPath}) async {}
 }
 
 class OTPService {
@@ -25,4 +30,8 @@ class OTPService {
     return otp == "1234"; // contoh verifikasi
   }
 }
+
+
+
+
 
