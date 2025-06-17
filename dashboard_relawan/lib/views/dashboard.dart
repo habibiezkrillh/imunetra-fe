@@ -1,225 +1,186 @@
+import 'package:dashboard_relawan/bloc/dashboard/dashboard_bloc.dart';
+import 'package:dashboard_relawan/bloc/dashboard/dashboard_event.dart';
+import 'package:dashboard_relawan/bloc/dashboard/dashboard_state.dart';
+import 'package:dashboard_relawan/model/dashboard/user_model.dart';
+import 'package:dashboard_relawan/views/all_activities.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
 
-class _HomePageState extends State<HomePage> {
-  final SearchController _searchController = SearchController();
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return BlocProvider(
+      create: (_) => DashboardBloc(RepositoryProvider.of(context))..add(LoadActivities()),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Container(
-          color: Colors.white,
+        body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 22, vertical: 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 24,
-                      backgroundImage: AssetImage("assets/images/Profile.jpg"), // Ganti path sesuai gambar profilmu
-                    ),
-                    SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Halo Aurel",
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          "Selamat Datang Kembali",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 20),
-
-                // Search Bar
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Cari kegiatan...',
-                      prefixIcon: Icon(Icons.search, color: Colors.black),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 30),
-
-                // Big Card
-                Container(
-                  margin: EdgeInsets.only(bottom: 24),
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 133, 172, 240),
-                      width: 2,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
+            padding: const EdgeInsets.all(16.0),
+            child: BlocBuilder<DashboardBloc, DashboardState>(
+              builder: (context, state) {
+                if (state is DashboardLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is DashboardLoaded) {
+                  final activities = state.activities;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/feature_course.jpg"),
-                            fit: BoxFit.cover,
+                      const SizedBox(height: 25),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 24,
+                            backgroundImage: AssetImage('assets/images/profile.jpg'),
+                          ),
+                          const SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Halo Aurel',
+                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              Text('Selamat Datang Kembali'),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 16),
+                      TextField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.search, color: Colors.black),
+                          hintText: 'Cari kegiatan...',
+                          hintStyle: TextStyle(color: Colors.grey[600]),
+                          contentPadding: EdgeInsets.symmetric(vertical: 14),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(14),
+                            borderSide: BorderSide(color: const Color.fromARGB(255, 190, 190, 190)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.blue, width: 1.5),
                           ),
                         ),
                       ),
-                      SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Pengingat Kegiatan",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: Container(
+                          width: double.infinity,
+                          height: 120,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Color(0xFF5588FF), Color(0xFF7BAEFF)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
-                            SizedBox(height: 6),
-                            Text(
-                              "Desa Sehat ta'",
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.grey[700],
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withOpacity(0.3),
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
                               ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Jumat, 20 Juli 2025",
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                color: Colors.blueAccent,
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.notifications_active, color: Colors.white, size: 36),
+                              const SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text('Pengingat Kegiatan', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 4),
+                                  Text("Desa Sehat ta'", style: TextStyle(color: Colors.white, fontSize: 15)),
+                                  Text('Jumat, 20 Juli 2025', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12)),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Kegiatan Bulan Juni', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AllActivitiesPage(
+                                    title: 'Kegiatan Bulan Juni', // ← sesuai judul yang tampil
+                                    activities: activities,       // ← kirim data yang sama
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text('Lihat Semua', style: TextStyle(fontSize: 14, color: Colors.blue)),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: activities.length,
+                          itemBuilder: (context, index) {
+                            return _buildCard(activities[index]);
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 28),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Kegiatan Disekitarmu', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AllActivitiesPage(
+                                    title: 'Kegiatan Disekitar anda', // ← sesuai judul yang tampil
+                                    activities: activities,       // ← kirim data yang sama
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text('Lihat Semua', style: TextStyle(fontSize: 14, color: Colors.blue)),
+                          ),
+
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: activities.length,
+                          itemBuilder: (context, index) {
+                            return _buildCard(activities[index]);
+                          },
                         ),
                       ),
                     ],
-                  ),
-                ),
-
-                // Kegiatan Bulan Juni
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Kegiatan Bulan Juni",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    Text(
-                      "Lihat semua",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 15),
-                SizedBox(
-                  height: 180,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      courseCard("28 Juni 2025", "Kegiatan Desa Makmur Abadi", "assets/images/course1.jpg"),
-                      courseCard("15 Desember 2025", "Kegiatan Relawan Setia ", "assets/images/course2.jpg"),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 25),
-
-                // Kegiatan Disekitarmu
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Kegiatan Disekitarmu",
-                      style: GoogleFonts.poppins(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    Text(
-                      "Lihat semua",
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 15),
-                SizedBox(
-                  height: 180,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      courseCard("28 Juni 2025", "Kegiatan Desa Makmur Abadi", "assets/images/course1.jpg"),
-                      courseCard("15 Desember 2025", "Kegiatan Relawan Setia ", "assets/images/course2.jpg"),
-                    ],
-                  ),
-                ),
-              ],
+                  );
+                } else if (state is DashboardError) {
+                  return Center(child: Text(state.message));
+                } else {
+                  return Container();
+                }
+              },
             ),
           ),
         ),
@@ -227,81 +188,39 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget courseCard(String tag, String title, String imagePath) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(16),
-      onTap: () {},
+  Widget _buildCard(Activity activity) {
+    return Container(
+      width: 150,
+      margin: const EdgeInsets.only(right: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        image: DecorationImage(
+          image: NetworkImage(activity.image),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Container(
-        width: 240,
-        margin: EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 6,
-              offset: Offset(0, 4),
-            ),
-          ],
-          image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.cover,
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            colors: [Colors.black54, Colors.transparent],
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
           ),
         ),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                  colors: [Colors.black.withOpacity(0.6), Colors.transparent],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                ),
+            const SizedBox(height: 8),
+            Chip(
+              backgroundColor: Color.fromARGB(183, 84, 124, 246),
+              label: Text(
+                activity.date,
+                style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700), // pastikan warna teks kontras
               ),
-            ),
-            Positioned(
-              top: 12,
-              left: 12,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent.withOpacity(0.85),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  tag,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 16,
-              left: 16,
-              right: 16,
-              child: Text(
-                title,
-                style: GoogleFonts.poppins(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 4,
-                      color: Colors.black87,
-                      offset: Offset(1, 1),
-                    ),
-                  ],
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            ),            Spacer(),
+            Text(activity.title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
