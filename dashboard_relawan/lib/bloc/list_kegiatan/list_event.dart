@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import 'package:equatable/equatable.dart';
 
 abstract class ActivityEvent extends Equatable {
@@ -6,9 +5,3 @@ abstract class ActivityEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadActivities extends ActivityEvent {}
-=======
-abstract class EventEvent {}
-
-class LoadEvents extends EventEvent {}
->>>>>>> Stashed changes

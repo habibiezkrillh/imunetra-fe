@@ -36,10 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
   flutter_bloc: ^9.1.1
-<<<<<<< Updated upstream
-  go_router: ^15.2.0
-=======
->>>>>>> Stashed changes
+
   equatable: ^2.0.7
 
 dev_dependencies:
@@ -67,24 +64,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/images/Profile.jpg
-<<<<<<< Updated upstream
   - assets/images/event1.jpg
   - assets/images/event2.jpg
   - assets/images/event3.jpg
   - assets/images/event4.jpg
   - assets/images/event5.jpg
-=======
-  - assets/images/card.jpg
-  - assets/images/card1.jpg
-  - assets/images/course2.jpg
-  - assets/images/course3.jpg
-  - assets/images/course4.jpg
-  - assets/images/course6.jpg
-  - assets/images/course7.jpg
-  - assets/images/course8.jpg
 
-
->>>>>>> Stashed changes
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
