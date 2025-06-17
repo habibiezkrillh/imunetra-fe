@@ -142,7 +142,45 @@ class ActivityDetailPage extends StatelessWidget {
 
                   // Tombol daftar
                  ElevatedButton.icon(
-                  onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        title: Text('Konfirmasi Pendaftaran', style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+                        content: Text(
+                          'Apakah kamu yakin ingin mendaftar ke kegiatan ini?',
+                          style: GoogleFonts.poppins(),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text('Batal', style: GoogleFonts.poppins(color: Colors.grey[600])),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Berhasil mendaftar!', style: GoogleFonts.poppins()),
+                                  backgroundColor: Colors.green,
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                              // Di sini bisa tambahkan logic daftar ke backend atau update state
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF5588FF),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            ),
+                            child: Text('Konfirmasi', style: GoogleFonts.poppins(color: Colors.white)),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
                   icon: const Icon(Icons.check_circle, size: 22, color: Colors.white), // lebih besar
                   label: Text(
                     "Daftar",

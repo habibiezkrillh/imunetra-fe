@@ -9,4 +9,6 @@ class DashboardRepo {
   Future<List<Activity>> getAllActivities() {
     return service.fetchActivities();
   }
+
+  Future fetchActivities() async {}
 }

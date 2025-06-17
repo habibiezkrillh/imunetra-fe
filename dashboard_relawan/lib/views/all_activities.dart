@@ -1,6 +1,6 @@
+import 'package:dashboard_relawan/views/detail_kegiatan.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard_relawan/model/dashboard/user_model.dart';
-import 'package:dashboard_relawan/views/detail_kegiatan.dart';
 
 class AllActivitiesPage extends StatefulWidget {
   final String title;

@@ -20,4 +20,6 @@ class Activity {
 
   String? get description => null;
 
+  get id => null;
+
 }

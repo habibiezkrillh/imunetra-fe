@@ -3,6 +3,7 @@ import 'package:dashboard_relawan/bloc/dashboard/dashboard_event.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_state.dart';
 import 'package:dashboard_relawan/model/dashboard/user_model.dart';
 import 'package:dashboard_relawan/views/all_activities.dart';
+import 'package:dashboard_relawan/views/detail_kegiatan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -136,8 +137,8 @@ class DashboardPage extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           itemCount: activities.length,
                           itemBuilder: (context, index) {
-                            return _buildCard(activities[index]);
-                          },
+                          return _buildCard(context, activities[index]);
+                        },
                         ),
                       ),
                       const SizedBox(height: 28),
@@ -169,7 +170,7 @@ class DashboardPage extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           itemCount: activities.length,
                           itemBuilder: (context, index) {
-                            return _buildCard(activities[index]);
+                            return _buildCard(context, activities[index]);
                           },
                         ),
                       ),
@@ -188,43 +189,53 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(Activity activity) {
-    return Container(
-      width: 150,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: DecorationImage(
-          image: NetworkImage(activity.image),
-          fit: BoxFit.cover,
-        ),
-      ),
+  Widget _buildCard(BuildContext context, Activity activity) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ActivityDetailPage(activity: activity, activityId: '',),
+          ),
+        );
+      },
       child: Container(
-        padding: const EdgeInsets.all(8),
+        width: 150,
+        margin: const EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            colors: [Colors.black54, Colors.transparent],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
+          image: DecorationImage(
+            image: NetworkImage(activity.image),
+            fit: BoxFit.cover,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            Chip(
-              backgroundColor: Color.fromARGB(183, 84, 124, 246),
-              label: Text(
-                activity.date,
-                style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700), // pastikan warna teks kontras
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: LinearGradient(
+              colors: [Colors.black54, Colors.transparent],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 8),
+              Chip(
+                backgroundColor: Color.fromARGB(183, 84, 124, 246),
+                label: Text(
+                  activity.date,
+                  style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+                ),
               ),
-            ),            Spacer(),
-            Text(activity.title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          ],
+              Spacer(),
+              Text(activity.title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
