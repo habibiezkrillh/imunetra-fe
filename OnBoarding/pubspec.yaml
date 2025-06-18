@@ -36,6 +36,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   image_picker: ^1.0.4
   flutter_bloc: ^9.1.1
+  google_fonts: ^6.1.0
 
 
 dev_dependencies:
@@ -48,6 +49,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.4
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -93,6 +97,6 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

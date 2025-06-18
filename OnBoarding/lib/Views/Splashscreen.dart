@@ -22,7 +22,7 @@ class SplashView extends StatelessWidget {
       listenWhen: (prev, curr) => prev.isCompleted != curr.isCompleted,
       listener: (context, state) {
         if (state.isCompleted) {
-          NavigatorHelper.navigateWithFade(context, OnboardingPage());
+          NavigatorHelper.navigateWithFade(context, OnboardingScreen());
         }
       },
       child: Scaffold(

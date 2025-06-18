@@ -1,11 +1,11 @@
 class OnboardingModel {
-  final String image;
   final String title;
   final String desc;
+  final String image;
 
   OnboardingModel({
-    required this.image,
     required this.title,
     required this.desc,
+    required this.image,
   });
 }
