@@ -1,22 +1,37 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_event.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_state.dart';
-import 'package:dashboard_relawan/services/dashboard/api_service.dart'; // ← pastikan ini
+import 'package:dashboard_relawan/services/dashboard/api_service.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  final DashboardService service;
+  final DashboardService dashboardService;
 
-  DashboardBloc(this.service) : super(DashboardInitial()) {
-    on<LoadActivities>(_onLoadActivities);
-  }
+  DashboardBloc(this.dashboardService) : super(DashboardInitial()) {
+    on<LoadActivities>((event, emit) async {
+      emit(DashboardLoading());
+      try {
+        final activities = await dashboardService.fetchActivities();
+        emit(DashboardLoaded(
+          activities: activities,
+          filteredActivities: activities,
+        ));
+      } catch (e) {
+        emit(DashboardError('Gagal memuat kegiatan.'));
+      }
+    });
 
-  void _onLoadActivities(LoadActivities event, Emitter<DashboardState> emit) async {
-    emit(DashboardLoading());
-    try {
-      final activities = await service.fetchActivities(); // asumsi ada fungsi ini
-      emit(DashboardLoaded(activities));
-    } catch (e) {
-      emit(DashboardError("Gagal memuat data kegiatan."));
-    }
+    on<SearchActivities>((event, emit) {
+      if (state is DashboardLoaded) {
+        final current = state as DashboardLoaded;
+        final query = event.query.toLowerCase();
+        final filtered = current.activities
+            .where((activity) => activity.title.toLowerCase().contains(query))
+            .toList();
+        emit(DashboardLoaded(
+          activities: current.activities,
+          filteredActivities: filtered,
+        ));
+      }
+    });
   }
 }

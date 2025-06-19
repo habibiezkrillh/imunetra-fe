@@ -8,12 +8,15 @@ class DashboardLoading extends DashboardState {}
 
 class DashboardLoaded extends DashboardState {
   final List<Activity> activities;
+  final List<Activity> filteredActivities;
 
-  DashboardLoaded(this.activities);
+  DashboardLoaded({
+    required this.activities,
+    required this.filteredActivities,
+  });
 }
 
 class DashboardError extends DashboardState {
   final String message;
-
   DashboardError(this.message);
 }

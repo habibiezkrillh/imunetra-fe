@@ -1,6 +1,7 @@
+import 'package:dashboard_relawan/model/dashboard/user_model.dart';
 import 'package:dashboard_relawan/model/list_kegiatan/list_model.dart';
 
-class ListService {
+class ActivityService {
   Future<List<EventModel>> fetchActivities() async {
     // Simulasi data dummy
     await Future.delayed(const Duration(seconds: 1));
@@ -42,4 +43,14 @@ class ListService {
       ),
     ];
   }
+
+  Future getActivities() async {}
+
+  Future getActivityById(String activityId) async {}
+
+  Future<void> createActivity(Activity activity) async {}
+
+  Future<void> updateActivity(String id, Activity updatedActivity) async {}
+
+  Future<void> registerToActivity(String activityId, String userId) async {}
 }

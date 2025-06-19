@@ -1,19 +1,23 @@
+import 'package:dashboard_relawan/bloc/reminder_card/reminder_bloc.dart';
+import 'package:dashboard_relawan/bloc/reminder_card/reminder_state.dart';
+import 'package:dashboard_relawan/views/detail_kegiatan.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_bloc.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_event.dart';
 import 'package:dashboard_relawan/bloc/dashboard/dashboard_state.dart';
 import 'package:dashboard_relawan/model/dashboard/user_model.dart';
 import 'package:dashboard_relawan/views/all_activities.dart';
-import 'package:dashboard_relawan/views/detail_kegiatan.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:dashboard_relawan/widgets/reminder_widget.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    final TextEditingController _searchController = TextEditingController();
+
+    return BlocProvider<DashboardBloc>(
       create: (_) => DashboardBloc(RepositoryProvider.of(context))..add(LoadActivities()),
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -23,158 +27,88 @@ class DashboardPage extends StatelessWidget {
             child: BlocBuilder<DashboardBloc, DashboardState>(
               builder: (context, state) {
                 if (state is DashboardLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is DashboardLoaded) {
-                  final activities = state.activities;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 25),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 24,
-                            backgroundImage: AssetImage('assets/images/profile.jpg'),
-                          ),
-                          const SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Halo Aurel',
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              Text('Selamat Datang Kembali'),
-                            ],
-                          ),
-                        ],
-                      ),
+                  return BlocBuilder<ReminderBloc, ReminderState>(
+                    builder: (context, reminderState) {
+                      List<Activity> reminders = [];
+                      if (reminderState is ReminderLoaded) {
+                        reminders = reminderState.reminders as List<Activity>;
+                      }
 
-                      const SizedBox(height: 16),
-                      TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          prefixIcon: Icon(Icons.search, color: Colors.black),
-                          hintText: 'Cari kegiatan...',
-                          hintStyle: TextStyle(color: Colors.grey[600]),
-                          contentPadding: EdgeInsets.symmetric(vertical: 14),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide(color: const Color.fromARGB(255, 190, 190, 190)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.blue, width: 1.5),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Center(
-                        child: Container(
-                          width: double.infinity,
-                          height: 120,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xFF5588FF), Color(0xFF7BAEFF)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.blue.withOpacity(0.3),
-                                blurRadius: 8,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Row(
+                      final filteredActivities = state.filteredActivities;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 25),
+                          Row(
                             children: [
-                              const Icon(Icons.notifications_active, color: Colors.white, size: 36),
-                              const SizedBox(width: 16),
+                              const CircleAvatar(
+                                radius: 24,
+                                backgroundImage: AssetImage('assets/images/profile.jpg'),
+                              ),
+                              const SizedBox(width: 20),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: const [
-                                  Text('Pengingat Kegiatan', style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 4),
-                                  Text("Desa Sehat ta'", style: TextStyle(color: Colors.white, fontSize: 15)),
-                                  Text('Jumat, 20 Juli 2025', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 12)),
+                                  Text('Halo Aurel', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                  Text('Selamat Datang Kembali'),
                                 ],
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Kegiatan Bulan Juni', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AllActivitiesPage(
-                                    title: 'Kegiatan Bulan Juni', // ← sesuai judul yang tampil
-                                    activities: activities,       // ← kirim data yang sama
-                                  ),
-                                ),
-                              );
+                          const SizedBox(height: 16),
+                          TextField(
+                            controller: _searchController,
+                            onChanged: (value) {
+                              context.read<DashboardBloc>().add(SearchActivities(value));
                             },
-                            child: Text('Lihat Semua', style: TextStyle(fontSize: 14, color: Colors.blue)),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              prefixIcon: const Icon(Icons.search, color: Colors.black),
+                              hintText: 'Cari kegiatan...',
+                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: const BorderSide(color: Color.fromARGB(255, 190, 190, 190)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: const BorderSide(color: Colors.blue, width: 1.5),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        height: 200,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: activities.length,
-                          itemBuilder: (context, index) {
-                          return _buildCard(context, activities[index]);
-                        },
-                        ),
-                      ),
-                      const SizedBox(height: 28),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Kegiatan Disekitarmu', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AllActivitiesPage(
-                                    title: 'Kegiatan Disekitar anda', // ← sesuai judul yang tampil
-                                    activities: activities,       // ← kirim data yang sama
+                          const SizedBox(height: 20),
+
+                          /// Reminder Card
+                          ReminderCard(
+                            onTap: () {
+                              if (reminders.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ActivityDetailPage(
+                                      activity: reminders.last,
+                                      isReminder: true, activities: [], title: '', onSearchChanged: null,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              }
                             },
-                            child: Text('Lihat Semua', style: TextStyle(fontSize: 14, color: Colors.blue)),
+                            hasReminder: reminders.isNotEmpty,
+                            latestReminder: reminders.isNotEmpty ? reminders.last : null,
                           ),
 
+                          const SizedBox(height: 24),
+                          _buildSection(context, 'Kegiatan Bulan Juni', filteredActivities),
+                          const SizedBox(height: 28),
+                          _buildSection(context, 'Kegiatan Disekitarmu', filteredActivities),
                         ],
-                      ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        height: 200,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: activities.length,
-                          itemBuilder: (context, index) {
-                            return _buildCard(context, activities[index]);
-                          },
-                        ),
-                      ),
-                    ],
+                      );
+                    },
                   );
                 } else if (state is DashboardError) {
                   return Center(child: Text(state.message));
@@ -189,13 +123,53 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
+  Widget _buildSection(BuildContext context, String title, List<Activity> activities) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AllActivitiesPage(
+                      activities: activities,
+                      title: title, activity: null, isReminder: null, onSearchChanged: null,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Lihat Semua', style: TextStyle(fontSize: 14, color: Colors.blue)),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: activities.length,
+            itemBuilder: (context, index) => _buildCard(context, activities[index]),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildCard(BuildContext context, Activity activity) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ActivityDetailPage(activity: activity, activityId: '',),
+            builder: (_) => ActivityDetailPage(
+              activity: activity,
+              isReminder: false, activities: [], title: '', onSearchChanged: null,
+            ),
           ),
         );
       },
@@ -213,7 +187,7 @@ class DashboardPage extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [Colors.black54, Colors.transparent],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
@@ -224,14 +198,14 @@ class DashboardPage extends StatelessWidget {
             children: [
               const SizedBox(height: 8),
               Chip(
-                backgroundColor: Color.fromARGB(183, 84, 124, 246),
+                backgroundColor: const Color.fromARGB(183, 84, 124, 246),
                 label: Text(
                   activity.date,
-                  style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
+                  style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700),
                 ),
               ),
-              Spacer(),
-              Text(activity.title, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              const Spacer(),
+              Text(activity.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             ],
           ),
         ),

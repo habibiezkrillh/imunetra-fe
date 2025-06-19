@@ -2,7 +2,7 @@ import 'package:dashboard_relawan/bloc/detail_kegiatan/detail_event.dart';
 import 'package:dashboard_relawan/bloc/detail_kegiatan/detail_state.dart';
 import 'package:dashboard_relawan/model/dashboard/user_model.dart';
 import 'package:dashboard_relawan/model/detail_kegiatan/detail_model.dart';
-import 'package:dashboard_relawan/repository/detail_repo.dart';
+import 'package:dashboard_relawan/repository/detailkegiatan/detail_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ActivityDetailBloc extends Bloc<ActivityDetailEvent, ActivityDetailState> {
@@ -12,7 +12,6 @@ class ActivityDetailBloc extends Bloc<ActivityDetailEvent, ActivityDetailState> 
     on<FetchActivityDetail>((event, emit) async {
       emit(ActivityDetailLoading());
       try {
-        final activity = await repository.fetchActivityDetail(event.id);
         emit(ActivityDetailLoaded(DetailModel as Activity));
       } catch (e) {
         emit(ActivityDetailError('Gagal memuat detail kegiatan.'));

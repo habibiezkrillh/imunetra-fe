@@ -1,7 +1,7 @@
 import 'package:dashboard_relawan/bloc/list_kegiatan/list_event.dart';
 import 'package:dashboard_relawan/bloc/list_kegiatan/list_state.dart';
 import 'package:dashboard_relawan/model/dashboard/user_model.dart';
-import 'package:dashboard_relawan/repository/list_repo.dart';
+import 'package:dashboard_relawan/repository/listkegiatan/list_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
